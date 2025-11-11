@@ -5,3 +5,4 @@ python-pptx==0.6.23
 pillow==10.2.0
 PyMuPDF==1.23.6
 sqlite-utils==3.36
+Fix requirements.txt for Streamlit Cloud
