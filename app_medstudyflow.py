@@ -7,7 +7,6 @@
 import streamlit as st
 import pandas as pd
 import sqlite3
-import fitz  # PyMuPDF para PDFs
 from pptx import Presentation
 from PIL import Image
 import io
@@ -70,9 +69,10 @@ def extraer_texto(archivo):
     nombre = archivo.name.lower()
     texto = ""
     if nombre.endswith(".pdf"):
-        doc = fitz.open(stream=archivo.read(), filetype="pdf")
-        for page in doc:
-            texto += page.get_text()
+        import pdfplumber
+        with pdfplumber.open(io.BytesIO(archivo.read())) as pdf:
+            for page in pdf.pages:
+                texto += page.extract_text() or ""
     elif nombre.endswith(".pptx"):
         prs = Presentation(io.BytesIO(archivo.read()))
         for slide in prs.slides:
